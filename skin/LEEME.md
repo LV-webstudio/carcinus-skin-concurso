@@ -42,3 +42,5 @@ Tarda unos 6 min en CPU (EGL por software). Con `--solo-capturas` solo saca los 
 - Los LEDs reales exigen corriente, difusores y su propio consumo en una batería de 75,6 Wh de la que no consta el BMS; no se ha estimado.
 - Solo se ve la carcasa superior y las patas con material translúcido; las patas se ven más tintadas que transparentes. MuJoCo no hace refracción ni luz global: el «interior» es un emisor con material luminoso más una luz puntual y un tinte del cristal.
 - Cámara de estudio, suelo y rótulos son decorativos. Sin nombres de personas en pantalla. Es un prototipo sin revisión de seguridad ni de normativa.
+
+Los renders usan el modelo del robot Jumper (KingKong) solo como referencia visual; uso interno; revisar la licencia antes de cualquier publicación.

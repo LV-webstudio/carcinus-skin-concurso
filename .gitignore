@@ -1,0 +1,15 @@
+# Secretos
+.env
+.env.*
+*.pem
+*.key
+credenciales*.json
+service-account*.json
+# Dependencias y salidas
+node_modules/
+out/
+logs/
+.DS_Store
+# Material con imagen del robot Jumper (render): fuera hasta decidir
+skin/video.mp4
+skin/captura_*.png

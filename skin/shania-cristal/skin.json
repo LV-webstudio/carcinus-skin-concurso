@@ -1,0 +1,130 @@
+{
+  "format": "shania-skin-proto/1",
+  "nota": "Formato PROPIO de prototipo. El esquema real de .skin vive en el repo hermano jumper-design, que NO esta en el kit (SUPUESTO que sea compatible: no lo es hasta validarlo con shellflow.py verify-package).",
+  "name": "shania-cristal",
+  "base_model": "assets/jumper/jumper.xml",
+  "glass": {
+    "shell": {
+      "rgba": [
+        0.66,
+        0.7,
+        0.76,
+        0.2
+      ],
+      "specular": 1.0,
+      "shininess": 1.0,
+      "reflectance": 0.08,
+      "glow_mix": 0.6
+    },
+    "limbs": {
+      "rgba": [
+        0.55,
+        0.6,
+        0.68,
+        0.42
+      ],
+      "specular": 0.9,
+      "shininess": 0.9,
+      "reflectance": 0.05,
+      "glow_mix": 0.8
+    },
+    "frame": {
+      "rgba": [
+        0.16,
+        0.18,
+        0.22,
+        0.9
+      ],
+      "specular": 0.5,
+      "shininess": 0.5,
+      "reflectance": 0.0
+    },
+    "display": {
+      "rgba": [
+        0.02,
+        0.03,
+        0.05,
+        1.0
+      ]
+    }
+  },
+  "emitters": {
+    "core": {
+      "parent": "upper_shell_link",
+      "type": "ellipsoid",
+      "pos": [
+        0.0,
+        0.0,
+        0.022
+      ],
+      "size": [
+        0.05,
+        0.07,
+        0.02
+      ]
+    },
+    "light": {
+      "parent": "upper_shell_link",
+      "pos": [
+        0.0,
+        0.0,
+        0.03
+      ],
+      "diffuse_gain": 0.9
+    },
+    "led_beads_per_hip": 1
+  },
+  "palette": {
+    "tide": {
+      "hex": "#5EE7FF",
+      "status": "SUPUESTO: no se encontro el hex de 'tide' en ~/relevos-lectura ni ~/trabajo; es el CIAN de 'en curso' de Timing (pieles-gatos/src/arana.ts:21, COMPROBADO como CIAN, no como 'tide')"
+    },
+    "amber": {
+      "hex": "#FFBE46",
+      "status": "COMPROBADO: AMBAR=[255,190,70], pieles-gatos/src/arana.ts:23 y :109 (esperando titular)"
+    },
+    "coral": {
+      "hex": "#FF7A6B",
+      "status": "COMPROBADO como 'coral del centurio' [255,122,107] (shania-timing/ui/arana.js:28 y comentario :31); SUPUESTO que sea el coral de bateria baja"
+    },
+    "orchid": {
+      "hex": "#DA70D6",
+      "status": "SUPUESTO: orquidea CSS estandar; el hex 'violeta orquidea' de Timing no se encontro"
+    }
+  },
+  "states": {
+    "alegre": {
+      "label": "ALEGRE / JUGANDO",
+      "color": "tide",
+      "pattern": "breath",
+      "hz": 0.6,
+      "min": 0.8,
+      "max": 1.0
+    },
+    "esperando": {
+      "label": "ESPERANDO",
+      "color": "amber",
+      "pattern": "breath",
+      "hz": 0.25,
+      "min": 0.65,
+      "max": 0.95
+    },
+    "bateria_baja": {
+      "label": "BATERIA BAJA",
+      "color": "coral",
+      "pattern": "blink",
+      "hz": 1.5,
+      "duty": 0.5,
+      "min": 0.03,
+      "max": 1.0
+    },
+    "cargando": {
+      "label": "CARGANDO",
+      "color": "orchid",
+      "pattern": "pulse",
+      "hz": 0.5,
+      "min": 0.15,
+      "max": 1.0
+    }
+  }
+}

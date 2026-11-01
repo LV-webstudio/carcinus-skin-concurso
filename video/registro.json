@@ -1,0 +1,28 @@
+{
+ "mujoco": "3.17.0",
+ "fotogramas_escena": 705,
+ "error_ik_max_m": 0.0121,
+ "objeto_tras_caer_xyz": [
+  0.175,
+  0.215,
+  0.0159
+ ],
+ "objeto_final_xyz": [
+  0.183,
+  0.0885,
+  0.0168
+ ],
+ "objeto_desplazamiento_m": 0.1268,
+ "objeto_dist_xy_a_pinza_izq_en_reposo_m": 0.0524,
+ "cuerpo_z_min_max": [
+  0.1013,
+  0.1157
+ ],
+ "cuerpo_xy_final": [
+  0.0093,
+  -0.0025
+ ],
+ "segundos_simulacion": 2.1,
+ "segundos_render": 548.2,
+ "fotogramas_total": 810
+}

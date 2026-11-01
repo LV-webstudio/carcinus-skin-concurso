@@ -110,7 +110,7 @@
       "max": 0.95
     },
     "bateria_baja": {
-      "label": "BATERIA BAJA",
+      "label": "BATERÍA BAJA",
       "color": "coral",
       "pattern": "blink",
       "hz": 1.5,

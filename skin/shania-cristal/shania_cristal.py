@@ -44,9 +44,14 @@ def _mat(spec, name, rgba, specular=0.5, shininess=0.5, reflectance=0.0, emissio
     return m
 
 
-def construir(suelo: bool = True) -> mujoco.MjSpec:
-    """Devuelve el MjSpec del Jumper con el skin aplicado, actuadores de posicion y escena de estudio."""
-    spec = mujoco.MjSpec.from_file(str(RAIZ / MANIFIESTO["base_model"]))
+def construir(suelo: bool = True, kit: str | pathlib.Path | None = None) -> mujoco.MjSpec:
+    """Devuelve el MjSpec del Jumper con el skin aplicado, actuadores de posicion y escena de estudio.
+
+    `kit`: carpeta del kit público de KingKong Robotics (github.com/KingKongRobotics/jumper). El modelo se lee
+    de ahí y no se copia a este repositorio. Por defecto, la raíz de este repo (uso antiguo, copia local del kit).
+    """
+    base = pathlib.Path(kit) if kit is not None else RAIZ
+    spec = mujoco.MjSpec.from_file(str(base / MANIFIESTO["base_model"]))
     g = MANIFIESTO["glass"]
     for nombre, clave in (("cristal_carcasa", "shell"), ("cristal_miembro", "limbs"), ("grafito", "frame")):
         c = g[clave]

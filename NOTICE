@@ -1,0 +1,13 @@
+carcinus-skin-concurso
+Copyright 2026 Shania Webstudio (Granada, España)
+
+Este proyecto se distribuye con la licencia Apache 2.0 (ver LICENSE).
+
+Usa como base el kit de código abierto Jumper de KingKong Robotics
+(https://github.com/KingKongRobotics/jumper), también con licencia Apache 2.0.
+El modelo del robot no se incluye en este repositorio: los scripts lo leen del
+kit clonado aparte. Los vídeos y las capturas de este repositorio están
+renderizados con ese modelo.
+
+Los nombres y logotipos «Shania Webstudio», «Shania» y «Carcinus» son signos de
+Shania Webstudio y no se licencian con este proyecto (Apache 2.0, apartado 6).

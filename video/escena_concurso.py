@@ -226,14 +226,18 @@ def _init(kit, w, h):
     _G["r"].scene.flags[mujoco.mjtRndFlag.mjRND_REFLECTION] = 1
 
 
-def camara(t: float, base_xy: np.ndarray) -> mujoco.MjvCamera:
-    """Plano general para la caída, acercamiento frontal durante el barrido y se abre al final."""
+def camara(t: float, base_xy: np.ndarray, retrato: bool = False) -> mujoco.MjvCamera:
+    """Plano general para la caída, acercamiento frontal durante el barrido y se abre al final.
+
+    En vertical (retrato) el campo horizontal es mucho más estrecho: la cámara se aleja para que quepa el robot."""
     cam = mujoco.MjvCamera(); cam.type = mujoco.mjtCamera.mjCAMERA_FREE
     acerc = suave((t - 3.5) / 3.0) - suave((t - 14.0) / 3.0)
     cam.lookat[:] = np.array([base_xy[0] + 0.12, base_xy[1] + 0.10, 0.035 + 0.02 * acerc])
     cam.distance = 0.70 - 0.17 * acerc + 0.04 * suave((t - 16.0) / 7.0)
     cam.azimuth = 165 + 12 * acerc + 18 * suave((t - 14.0) / 9.5)
     cam.elevation = -28 - 9 * acerc
+    if retrato:
+        cam.distance *= 2.3; cam.elevation -= 10
     return cam
 
 
@@ -249,7 +253,7 @@ def _render(args):
         wgt = (t - t0) / 0.5; col = sc.PALETA[sc.ESTADOS[prev]["color"]] * (1 - wgt) + col * wgt
     piel.aplicar(col, inten)
     opt = mujoco.MjvOption(); opt.geomgroup[:] = [1, 0, 1, 0, 0, 0]
-    r.update_scene(d, camera=camara(t, qpos[:2]), scene_option=opt)
+    r.update_scene(d, camera=camara(t, qpos[:2], h > w), scene_option=opt)
     arr = r.render().astype(np.float32)
     # resplandor (posproceso de imagen, no física)
     lum = arr.max(2); mask = np.clip((lum - 170) / 85, 0, 1)[..., None] * (arr / 255.0)
@@ -260,29 +264,34 @@ def _render(args):
     return f
 
 
-def fuentes(h):
+def fuentes(h, retrato: bool = False):
     from PIL import ImageFont
     base = "/usr/share/fonts/truetype/dejavu/"
     return (ImageFont.truetype(base + "DejaVuSans-Bold.ttf", int(h * 0.042)),
             ImageFont.truetype(base + "DejaVuSans.ttf", int(h * 0.024)),
-            ImageFont.truetype(base + "DejaVuSans-Bold.ttf", int(h * 0.036)))
+            ImageFont.truetype(base + "DejaVuSans-Bold.ttf", int(h * (0.030 if retrato else 0.036))))
 
 
 def rotular(img, t, est, inten):
     from PIL import ImageDraw
     w, h = img.size
-    fg, fc, fr = fuentes(h)
+    retrato = h > w
+    u = min(w, h)  # unidad de tamaño: el lado corto
+    fg, fc, fr = fuentes(u, retrato)
     dr = ImageDraw.Draw(img, "RGBA")
     e = sc.ESTADOS[est]; hexc = sc.MANIFIESTO["palette"][e["color"]]["hex"]
     rc = tuple(int(c * 255) for c in sc.PALETA[e["color"]])
-    x0, y0 = w * .03, h * .05
-    dr.rounded_rectangle([x0, y0, x0 + w * .30, y0 + h * .105], 14, fill=(5, 8, 14, 210), outline=rc, width=3)
-    dr.ellipse([x0 + h * .02, y0 + h * .03, x0 + h * .065, y0 + h * .075], fill=tuple(int(c * (0.15 + .85 * inten)) for c in rc))
-    dr.text((x0 + h * .085, y0 + h * .012), e["label"], font=fg, fill=(235, 240, 250))
-    dr.text((x0 + h * .085, y0 + h * .064), f"skin shania-cristal  ·  {hexc}", font=fc, fill=(150, 160, 180))
+    x0, y0 = u * .053, (h * .05 if not retrato else h * .06)
+    dr.rounded_rectangle([x0, y0, x0 + u * .533, y0 + u * .105], 14, fill=(5, 8, 14, 210), outline=rc, width=3)
+    dr.ellipse([x0 + u * .02, y0 + u * .03, x0 + u * .065, y0 + u * .075], fill=tuple(int(c * (0.15 + .85 * inten)) for c in rc))
+    dr.text((x0 + u * .085, y0 + u * .012), e["label"], font=fg, fill=(235, 240, 250))
+    dr.text((x0 + u * .085, y0 + u * .064), f"skin shania-cristal  ·  {hexc}", font=fc, fill=(150, 160, 180))
     # marca de agua permanente
-    dr.text((w * .97, h * .955), "Simulación MuJoCo en CPU · modelo Jumper © KingKong Robotics (Apache-2.0)",
-            font=fc, fill=(170, 178, 195, 200), anchor="rs")
+    marca = ["Simulación MuJoCo en CPU · modelo Jumper © KingKong Robotics (Apache-2.0)"]
+    if retrato:
+        marca = ["Simulación MuJoCo en CPU", "modelo Jumper © KingKong Robotics (Apache-2.0)"]
+    for i, linea in enumerate(reversed(marca)):
+        dr.text((w * .97, h * .955 - i * u * .034), linea, font=fc, fill=(170, 178, 195, 200), anchor="rs")
     for a, b, txt in RUTULOS:
         if a <= t <= b:
             al = int(255 * min(1, (t - a) / 0.3, (b - t) / 0.3))
@@ -292,14 +301,27 @@ def rotular(img, t, est, inten):
             dr.text((cx, cy), txt, font=fr, fill=(240, 244, 252, al), anchor="mm")
 
 
+def partir(dr, txt, fnt, ancho):
+    """Parte una línea en varias si no cabe en `ancho` píxeles (formato vertical)."""
+    lineas, actual = [], ""
+    for palabra in txt.split():
+        prueba = f"{actual} {palabra}".strip()
+        if actual and dr.textlength(prueba, font=fnt) > ancho:
+            lineas.append(actual); actual = palabra
+        else:
+            actual = prueba
+    return lineas + [actual]
+
+
 def tarjeta_cierre(out: pathlib.Path, w: int, h: int, fps: int, f0: int):
     from PIL import Image, ImageDraw
-    fg, fc, fr = fuentes(h)
+    retrato = h > w
+    fg, fc, fr = fuentes(min(w, h), retrato)
     ultimo = Image.open(out / "frames" / f"f{f0 - 1:05d}.png").convert("RGB")
     logo = None
     lp = RAIZ / "assets" / "marca" / "logo.png"
     if lp.exists():
-        logo = Image.open(lp).convert("RGBA"); logo.thumbnail((int(h * .16), int(h * .16)))
+        logo = Image.open(lp).convert("RGBA"); logo.thumbnail((int(min(w, h) * .16), int(min(w, h) * .16)))
     lineas = [
         (fr, "Skin «shania-cristal» · prototipo en simulación", (235, 240, 250)),
         (fc, "Robot: modelo Jumper del kit open-source de KingKong Robotics (Apache-2.0)", (190, 198, 215)),
@@ -317,7 +339,10 @@ def tarjeta_cierre(out: pathlib.Path, w: int, h: int, fps: int, f0: int):
             lg = logo.copy(); lg.putalpha(lg.getchannel("A").point(lambda v: int(v * a)))
             img.paste(lg, (int(w / 2 - lg.width / 2), int(h * .12)), lg); y = h * .36
         for fnt, txt, c in lineas:
-            dr.text((w / 2, y), txt, font=fnt, fill=(*c, int(255 * a)), anchor="mm"); y += h * (0.075 if fnt is fr else 0.055)
+            for parte in partir(dr, txt, fnt, w * 0.9):
+                dr.text((w / 2, y), parte, font=fnt, fill=(*c, int(255 * a)), anchor="mm")
+                y += min(w, h) * (0.075 if fnt is fr else 0.050)
+            y += min(w, h) * 0.008
         img.save(out / "frames" / f"f{f0 + i:05d}.png")
     return n
 

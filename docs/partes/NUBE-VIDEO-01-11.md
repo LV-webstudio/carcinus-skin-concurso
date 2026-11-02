@@ -40,10 +40,16 @@ MUJOCO_GL=osmesa python3 video/escena_concurso.py --kit ~/kit/jumper --out video
 ## Pendiente
 - **Revisión humana del vídeo** (Lorenzo/Lucy) antes de publicar: encuadre, ritmo y si se quiere quitar el tramo de batería baja/cargando (es ilustrativo y puede confundir).
 - **Publicación (la hace Lucy)**, con las bases: vídeo de más de 15 s (este dura 27 s), y en el texto del post `#Jumper #CrabRobot #OpenSourceRobot` y la mención `@KingKong Robotics`. Texto propuesto, sin cifras de rendimiento: «Nuestro skin de cristal "shania-cristal" para Jumper, en simulación MuJoCo: la luz interior cambia con el estado y el robot acerca a sus pies un objeto que se ha caído. Modelo del kit open-source de @KingKong Robotics (Apache-2.0). #Jumper #CrabRobot #OpenSourceRobot».
-- Comprobar en las bases si exigen hardware real, una política entrenada o un formato concreto (vertical, duración máxima, audio). Este vídeo es horizontal, sin audio y solo de simulación.
+- Comprobar en las bases si exigen hardware real, una política entrenada o un formato concreto (vertical, duración máxima, audio). Hay versión horizontal y vertical, las dos sin audio y solo de simulación.
 - El formato `skin.json` sigue sin validarse contra `jumper-design` (ver `skin/LEEME.md`), y la carcasa de cristal no tiene modelo térmico.
 - Discrepancia previa (no tocada): el `README.md` dice que el vídeo y las capturas renderizadas con el modelo no se incluyen, pero `skin/` sí contiene `video.mp4` y capturas del commit anterior. Hay que decidir y ajustar el texto.
 - Entorno de la nube: el script de preparación del entorno falló al crear el contenedor (comprobación `sha512sum` de `Godot_v4.7.2-stable_mono_linux_x86_64.zip`, que no se llega a descargar). No afecta a este trabajo, pero hay que corregirlo en la configuración del entorno.
+
+## Segunda tanda (después de la primera entrega)
+- **Versión vertical 9:16** para redes: `video/video_concurso_vertical.mp4` (1080×1920; mismo guion y misma simulación) y capturas `video/capturas/vertical_*.png`. El script admite ahora formato vertical: la cámara se aleja y los rótulos se reparten en más líneas.
+- **README** corregido: ya no dice que no se incluyen renders. Ahora explica que el modelo no se incluye pero sus renders sí (`skin/` y `video/`).
+- **Idea de la GPU** apuntada en `docs/ideas/GPU-movimientos.md` y **enviada a la sesión legatus** el 01-11-2026, con el permiso de Lorenzo dado en el móvil.
+- No se ha fusionado nada en `main`: el PR sigue en borrador hasta que haya revisión humana.
 
 ## Propuesta de Lorenzo: mejorar los movimientos con Nemotron o algo parecido
 Recibida durante la sesión; **no está aplicada** en este vídeo. Notas para decidir:

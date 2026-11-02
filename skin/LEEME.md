@@ -1,6 +1,6 @@
 # Skin «shania-cristal» (prototipo en simulación)
 
-Shania Webstudio, 14-10-2026. Carcasa de cristal translúcida con un emisor de luz interior que cambia de color según 4 estados. Solo simulación MuJoCo en CPU (16 núcleos, sin GPU, sin hardware). Nada publicado.
+Shania Webstudio, 14-10-2026. Carcasa de cristal translúcida con un emisor de luz interior que cambia de color según 4 estados. Solo simulación MuJoCo en CPU (16 núcleos, sin GPU, sin hardware). (Nota del 02-11-2026: el repositorio es ahora público con licencia Apache-2.0; ver `NOTICE`.)
 
 ## Qué hay
 - `shania-cristal/skin.json`: definición del skin (materiales, emisor, paleta, 4 estados con su patrón).
@@ -43,4 +43,4 @@ Tarda unos 6 min en CPU (EGL por software). Con `--solo-capturas` solo saca los 
 - Solo se ve la carcasa superior y las patas con material translúcido; las patas se ven más tintadas que transparentes. MuJoCo no hace refracción ni luz global: el «interior» es un emisor con material luminoso más una luz puntual y un tinte del cristal.
 - Cámara de estudio, suelo y rótulos son decorativos. Sin nombres de personas en pantalla. Es un prototipo sin revisión de seguridad ni de normativa.
 
-Los renders usan el modelo del robot Jumper (KingKong) solo como referencia visual; uso interno; revisar la licencia antes de cualquier publicación.
+Los renders usan el modelo del robot Jumper del kit open-source de KingKong Robotics (Apache-2.0), con la autoría citada en `NOTICE`.

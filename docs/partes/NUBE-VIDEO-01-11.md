@@ -35,7 +35,7 @@ MUJOCO_GL=osmesa python3 video/escena_concurso.py --kit ~/kit/jumper --out video
 ## Rigor y licencias
 - **Uso de IA**: el script de la escena, la coreografía y los textos se escribieron con asistencia de IA (Claude, de Anthropic). Las imágenes son renders del motor físico MuJoCo; no son vídeo generado por IA. Está dicho en la tarjeta final del vídeo y en `video/LEEME.md`.
 - **Apache-2.0 del kit**: autoría citada en la marca de agua, en la tarjeta final y en `video/LEEME.md` («Copyright 2026 KingKong Robotics»). El modelo no se copia aquí; solo se publicarían renders. Antes de publicar, conviene que alguien revise si el concurso pide además enlazar el kit o su `NOTICE`.
-- Este repositorio es privado y con licencia propietaria (`LICENSE`); el vídeo incluye renders de un modelo de terceros con Apache-2.0, cosa que esa licencia permite citando la autoría.
+- Licencia del repositorio: desde el commit `1ea28b3` (Shania Webstudio, autorizado por Lucy el 01-11) es Apache-2.0, con `NOTICE` que cita el kit de KingKong Robotics. Las marcas y logotipos de Shania no se licencian. Los renders del modelo del kit (Apache-2.0) se pueden distribuir citando la autoría.
 
 ## Pendiente
 - **Revisión humana del vídeo** (Lorenzo/Lucy) antes de publicar: encuadre, ritmo y si se quiere quitar el tramo de batería baja/cargando (es ilustrativo y puede confundir).

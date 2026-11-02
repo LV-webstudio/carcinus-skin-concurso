@@ -83,6 +83,8 @@ def leer_home(kit: pathlib.Path) -> dict[str, float]:
 
 def construir_modelo(kit: pathlib.Path) -> mujoco.MjModel:
     spec = sc.construir(kit=kit)
+    # búfer de render cuadrado de 1920: sirve para 1920x1080 y para el vertical 1080x1920
+    spec.visual.global_.offwidth, spec.visual.global_.offheight = 1920, 1920
     mat = spec.add_material(name="objeto")
     mat.rgba = [1.0, 0.98, 0.94, 1.0]; mat.specular = 0.4; mat.shininess = 0.6; mat.emission = 0.25
     b = spec.worldbody.add_body(name="objeto", pos=[*OBJ_XY0, 0.32])

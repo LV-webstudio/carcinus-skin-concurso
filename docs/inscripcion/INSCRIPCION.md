@@ -77,3 +77,10 @@ Glass shell skin for the Jumper crab robot: the inner light changes with 4 state
 | Plataforma | Enlace | Fecha | Publicado por |
 |---|---|---|---|
 | | | | |
+
+## Revisión del 02-11-2026 (sesión de la nube, sobre una copia limpia de `main`)
+- Vídeos: H.264, 27,0 s, sin pista de audio, 1920×1080 y 1080×1920 (ffprobe). Las sumas de `video/SHA256SUMS` coinciden.
+- Repositorio público con Apache-2.0 (API de GitHub); `LICENSE` con el texto completo de Apache-2.0 y `NOTICE` que cita el kit de KingKong Robotics.
+- No hay modelo del kit copiado (ni `.stl` ni `jumper*.xml`) ni credenciales en el repositorio.
+- Corregido en esta revisión: README con tildes, nombre oficial del concurso, imagen de vista previa enlazada al vídeo y resumen en inglés; notas de `skin/LEEME.md` y `video/LEEME.md` que todavía decían «uso interno» o «nada publicado»; `skin/SHA256SUMS` regenerado (venía desfasado).
+- **Falta solo la publicación** (Lucy) y verificar las bases en la página oficial.

@@ -1,6 +1,6 @@
 # Vídeo del concurso: el Jumper con el skin «shania-cristal» recoge un objeto caído
 
-Escena en simulación MuJoCo (CPU, sin hardware) para el «Crab Robot Open-Source Motion Contest 2026» de KingKong Robotics. Nada publicado: la publicación la hace Lucy.
+Escena en simulación MuJoCo (CPU, sin hardware) para el «Crab Robot Open-source Challenge 2026» de KingKong Robotics. La publicación en redes la hace Lucy (ver `docs/inscripcion/INSCRIPCION.md`).
 
 ## Qué hace la escena (26,5 s)
 | Tiempo | Luz (estado del skin) | Qué pasa |

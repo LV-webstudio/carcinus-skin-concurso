@@ -31,5 +31,22 @@ El kit de KingKong Robotics trae un cuaderno para entrenar en la GPU de Colab: `
 - No se cargan checkpoints `.pt` de terceros (cargar uno puede ejecutar código); solo los que entrenemos nosotros.
 - **Nemotron** (modelo de lenguaje de NVIDIA) no hace falta para esto. Si se quiere usar para redactar recompensas o guiones, se revisa su licencia antes.
 
-## Comprobado
-(se rellena con lo que se haya ejecutado de verdad)
+## Pasos en Colab (para quien lance el entrenamiento)
+1. Abrir el cuaderno del kit (enlace de arriba), **Archivo → Guardar una copia en Drive** y elegir un entorno con GPU (Entorno de ejecución → Cambiar tipo → GPU).
+2. Ejecutar la celda de ajustes básicos con `TASK = "jumper.gesture_paw"` y dejar `NUM_ENVS` e `ITERATIONS` por defecto en la primera prueba. Ejecutar la celda de instalación y comprobación de la GPU.
+3. **Antes de entrenar**, añadir una celda nueva con esto, que genera el XML con nuestro skin dentro de la copia del kit:
+   ```
+   !git clone --depth 1 https://github.com/LV-webstudio/carcinus-skin-concurso /content/carcinus
+   !/content/jumper/.venv/bin/python /content/carcinus/skin/exportar_xml.py --kit /content/jumper --estado alegre
+   MODEL = "assets/jumper/jumper_shania_cristal_alegre.xml"
+   ```
+   (Si la copia del kit no está en `/content/jumper`, usar la carpeta que diga `CHECKOUT_FOLDER`.) El cuaderno pasa `MODEL` a `--model` en el entrenamiento, la reproducción y la exportación, y esa opción admite una ruta a un `.xml`.
+4. Entrenar, mirar las curvas, reproducir el vídeo y **descargar el ZIP de respaldo** antes de que se cierre la sesión. Subir el ZIP a una release del repositorio si pesa más de 50 MB; no meterlo en git.
+5. Dejar un parte en `docs/partes/` con la tarea, el número de entornos y de iteraciones, la GPU que asignó Colab y lo que se ve en las curvas, sin redondear ni interpretar de más.
+
+## Comprobado (02-11-2026, en la nube, CPU, sin GPU)
+Kit `KingKongRobotics/jumper`, commit `198686e`, instalado en un entorno aislado (`.venv`: torch 2.15.0 y mujoco 3.11.0, los que resolvió el instalador del kit).
+- `skin/exportar_xml.py` genera el XML. Al compilarlo: mismos cuerpos (42), articulaciones (23) y masas que el modelo del kit; solo añade 7 geometrías visuales `skin_*`.
+- **Reproductor del kit** (`scripts/play.py --task jumper.gesture_paw --model …shania_cristal_alegre.xml --agent zero`, sin checkpoint): carga el modelo y graba vídeo con el skin. Con `MUJOCO_GL=osmesa` el reproductor del kit da un fallo de segmentación también con el modelo original, así que es un problema del render por software y no del skin; con `MUJOCO_GL=egl` funciona.
+- **Entrenamiento del kit** (`scripts/train.py --task jumper.gesture_paw --model …shania_cristal_alegre.xml --backend native --device cpu --num_envs 8 --max-iterations 2`): termina sin errores y guarda `model_0.pt` y `model_1.pt`. Es solo una prueba del circuito: con 8 entornos y 2 iteraciones no se aprende nada útil, y no permite estimar cuánto tardaría un entrenamiento de verdad.
+- No se ha cargado ningún checkpoint de terceros.

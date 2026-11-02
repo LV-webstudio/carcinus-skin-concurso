@@ -57,3 +57,15 @@ Recibida durante la sesión; **no está aplicada** en este vídeo. Notas para de
 - Para un movimiento más natural lo que suele funcionar es **aprendizaje por refuerzo en simulación**. El propio kit trae su marco de entrenamiento (`rl/`, basado en mjlab, Apache-2.0) y tareas del Jumper (`tasks/jumper/`); entrenar ahí una tarea de «empujar objeto» es el camino más directo. En la familia de NVIDIA, lo cercano son los modelos de robótica de Isaac/GR00T, no Nemotron.
 - Coste: en CPU (esta máquina, 4 núcleos) el entrenamiento por refuerzo sería muy lento; con GPU sería viable, pero **no se usan servicios de pago** sin permiso. Las licencias de los modelos de NVIDIA hay que revisarlas antes de usarlos en el concurso.
 - Cualquier movimiento salido de un modelo de IA se marcará como tal en el vídeo y en la publicación.
+
+## Tercera tanda (02-11-2026): vídeo aprobado y GPU aprobada
+Lorenzo aprueba el vídeo y la GPU y pide «hacer lo necesario para que la inscripción sea válida».
+- **Bases**: la página oficial no se puede abrir desde la nube (la red no la permite). Se usa la transcripción que guardó otro participante el 28-10 (`Omshri07/crab-rave-jumper`, `5_RULES/`), contrastada con búsquedas web. En resumen: no hay formulario, se participa **publicando en X o YouTube** un vídeo de más de 15 s con `#Jumper #CrabRobot #OpenSourceRobot` y la mención `@KingKong Robotics`; la obra debe ser original, la música corre a cargo del participante y hay que respetar la licencia del kit. Concurso hasta el 30-11-2026 (la ronda 1 cerró el 30-10).
+- **Paquete de inscripción**: `docs/inscripcion/INSCRIPCION.md`, con la lista de requisitos y su estado, qué archivo subir a cada plataforma, textos para X y YouTube, lo que se acepta al publicar (cesión de derechos a KingKong y aviso de premio por mensaje privado con 5 días para responder) y los pasos de Lucy.
+- **Repositorio público** con Apache-2.0 (comprobado con la API de GitHub). El README enlaza el vídeo y la inscripción, e incluye un resumen en inglés.
+- **GPU**: plan en `docs/ideas/GPU-movimientos.md`. Ruta: el cuaderno de Colab del kit, que tiene que lanzar una persona con su cuenta de Google. Nuevo `skin/exportar_xml.py`: con él, el reproductor y el entrenamiento **del propio kit** funcionan con nuestro skin (probado en CPU; resultados en ese documento).
+- El PR #1 ya lo había fusionado LV-webstudio en `main`; esta tanda va en un PR nuevo.
+
+### Pendiente
+- **Lucy**: abrir la página oficial, confirmar las bases y publicar siguiendo `docs/inscripcion/INSCRIPCION.md`; después, apuntar el enlace.
+- **Entrenamiento en GPU**: lo lanza una persona en Colab siguiendo los pasos del plan.

@@ -6,4 +6,8 @@ Prototipo en simulacion del skin «shania-cristal» para el concurso: carcasa de
 
 Hecho para el «Crab Robot Open-Source Motion Contest 2026» de KingKong Robotics.
 
+**Vídeo del concurso**: [`video/video_concurso.mp4`](video/video_concurso.mp4) (1920×1080) y [`video/video_concurso_vertical.mp4`](video/video_concurso_vertical.mp4) (1080×1920), 27 s, sin audio. Cómo se hizo: [`video/LEEME.md`](video/LEEME.md). Inscripción: [`docs/inscripcion/INSCRIPCION.md`](docs/inscripcion/INSCRIPCION.md).
+
+*In English:* glass-shell skin for the Jumper crab robot (KingKong Robotics open-source kit, Apache-2.0). The inner light changes with 4 states, and in the video the robot sweeps a dropped object back to its feet. MuJoCo simulation on CPU; the motion is scripted (inverse kinematics + contact physics), written with AI assistance (Claude). Not real hardware, not AI-generated video. #Jumper #CrabRobot #OpenSourceRobot
+
 Licencia: Apache 2.0 (ver [LICENSE](LICENSE) y [NOTICE](NOTICE)). © 2026 Shania Webstudio. Las marcas y logotipos de Shania no se licencian.

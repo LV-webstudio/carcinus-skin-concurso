@@ -35,15 +35,21 @@ MUJOCO_GL=osmesa python3 video/escena_concurso.py --kit ~/kit/jumper --out video
 ## Rigor y licencias
 - **Uso de IA**: el script de la escena, la coreografía y los textos se escribieron con asistencia de IA (Claude, de Anthropic). Las imágenes son renders del motor físico MuJoCo; no son vídeo generado por IA. Está dicho en la tarjeta final del vídeo y en `video/LEEME.md`.
 - **Apache-2.0 del kit**: autoría citada en la marca de agua, en la tarjeta final y en `video/LEEME.md` («Copyright 2026 KingKong Robotics»). El modelo no se copia aquí; solo se publicarían renders. Antes de publicar, conviene que alguien revise si el concurso pide además enlazar el kit o su `NOTICE`.
-- Este repositorio es privado y con licencia propietaria (`LICENSE`); el vídeo incluye renders de un modelo de terceros con Apache-2.0, cosa que esa licencia permite citando la autoría.
+- Licencia del repositorio: desde el commit `1ea28b3` (Shania Webstudio, autorizado por Lucy el 01-11) es Apache-2.0, con `NOTICE` que cita el kit de KingKong Robotics. Las marcas y logotipos de Shania no se licencian. Los renders del modelo del kit (Apache-2.0) se pueden distribuir citando la autoría.
 
 ## Pendiente
 - **Revisión humana del vídeo** (Lorenzo/Lucy) antes de publicar: encuadre, ritmo y si se quiere quitar el tramo de batería baja/cargando (es ilustrativo y puede confundir).
 - **Publicación (la hace Lucy)**, con las bases: vídeo de más de 15 s (este dura 27 s), y en el texto del post `#Jumper #CrabRobot #OpenSourceRobot` y la mención `@KingKong Robotics`. Texto propuesto, sin cifras de rendimiento: «Nuestro skin de cristal "shania-cristal" para Jumper, en simulación MuJoCo: la luz interior cambia con el estado y el robot acerca a sus pies un objeto que se ha caído. Modelo del kit open-source de @KingKong Robotics (Apache-2.0). #Jumper #CrabRobot #OpenSourceRobot».
-- Comprobar en las bases si exigen hardware real, una política entrenada o un formato concreto (vertical, duración máxima, audio). Este vídeo es horizontal, sin audio y solo de simulación.
+- Comprobar en las bases si exigen hardware real, una política entrenada o un formato concreto (vertical, duración máxima, audio). Hay versión horizontal y vertical, las dos sin audio y solo de simulación.
 - El formato `skin.json` sigue sin validarse contra `jumper-design` (ver `skin/LEEME.md`), y la carcasa de cristal no tiene modelo térmico.
 - Discrepancia previa (no tocada): el `README.md` dice que el vídeo y las capturas renderizadas con el modelo no se incluyen, pero `skin/` sí contiene `video.mp4` y capturas del commit anterior. Hay que decidir y ajustar el texto.
 - Entorno de la nube: el script de preparación del entorno falló al crear el contenedor (comprobación `sha512sum` de `Godot_v4.7.2-stable_mono_linux_x86_64.zip`, que no se llega a descargar). No afecta a este trabajo, pero hay que corregirlo en la configuración del entorno.
+
+## Segunda tanda (después de la primera entrega)
+- **Versión vertical 9:16** para redes: `video/video_concurso_vertical.mp4` (1080×1920; mismo guion y misma simulación) y capturas `video/capturas/vertical_*.png`. El script admite ahora formato vertical: la cámara se aleja y los rótulos se reparten en más líneas.
+- **README** corregido: ya no dice que no se incluyen renders. Ahora explica que el modelo no se incluye pero sus renders sí (`skin/` y `video/`).
+- **Idea de la GPU** apuntada en `docs/ideas/GPU-movimientos.md` y **enviada a la sesión legatus** el 01-11-2026, con el permiso de Lorenzo dado en el móvil.
+- No se ha fusionado nada en `main`: el PR sigue en borrador hasta que haya revisión humana.
 
 ## Propuesta de Lorenzo: mejorar los movimientos con Nemotron o algo parecido
 Recibida durante la sesión; **no está aplicada** en este vídeo. Notas para decidir:
@@ -51,3 +57,15 @@ Recibida durante la sesión; **no está aplicada** en este vídeo. Notas para de
 - Para un movimiento más natural lo que suele funcionar es **aprendizaje por refuerzo en simulación**. El propio kit trae su marco de entrenamiento (`rl/`, basado en mjlab, Apache-2.0) y tareas del Jumper (`tasks/jumper/`); entrenar ahí una tarea de «empujar objeto» es el camino más directo. En la familia de NVIDIA, lo cercano son los modelos de robótica de Isaac/GR00T, no Nemotron.
 - Coste: en CPU (esta máquina, 4 núcleos) el entrenamiento por refuerzo sería muy lento; con GPU sería viable, pero **no se usan servicios de pago** sin permiso. Las licencias de los modelos de NVIDIA hay que revisarlas antes de usarlos en el concurso.
 - Cualquier movimiento salido de un modelo de IA se marcará como tal en el vídeo y en la publicación.
+
+## Tercera tanda (02-11-2026): vídeo aprobado y GPU aprobada
+Lorenzo aprueba el vídeo y la GPU y pide «hacer lo necesario para que la inscripción sea válida».
+- **Bases**: la página oficial no se puede abrir desde la nube (la red no la permite). Se usa la transcripción que guardó otro participante el 28-10 (`Omshri07/crab-rave-jumper`, `5_RULES/`), contrastada con búsquedas web. En resumen: no hay formulario, se participa **publicando en X o YouTube** un vídeo de más de 15 s con `#Jumper #CrabRobot #OpenSourceRobot` y la mención `@KingKong Robotics`; la obra debe ser original, la música corre a cargo del participante y hay que respetar la licencia del kit. Concurso hasta el 30-11-2026 (la ronda 1 cerró el 30-10).
+- **Paquete de inscripción**: `docs/inscripcion/INSCRIPCION.md`, con la lista de requisitos y su estado, qué archivo subir a cada plataforma, textos para X y YouTube, lo que se acepta al publicar (cesión de derechos a KingKong y aviso de premio por mensaje privado con 5 días para responder) y los pasos de Lucy.
+- **Repositorio público** con Apache-2.0 (comprobado con la API de GitHub). El README enlaza el vídeo y la inscripción, e incluye un resumen en inglés.
+- **GPU**: plan en `docs/ideas/GPU-movimientos.md`. Ruta: el cuaderno de Colab del kit, que tiene que lanzar una persona con su cuenta de Google. Nuevo `skin/exportar_xml.py`: con él, el reproductor y el entrenamiento **del propio kit** funcionan con nuestro skin (probado en CPU; resultados en ese documento).
+- El PR #1 ya lo había fusionado LV-webstudio en `main`; esta tanda va en un PR nuevo.
+
+### Pendiente
+- **Lucy**: abrir la página oficial, confirmar las bases y publicar siguiendo `docs/inscripcion/INSCRIPCION.md`; después, apuntar el enlace.
+- **Entrenamiento en GPU**: lo lanza una persona en Colab siguiendo los pasos del plan.

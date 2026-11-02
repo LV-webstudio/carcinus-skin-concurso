@@ -44,7 +44,7 @@ def _mat(spec, name, rgba, specular=0.5, shininess=0.5, reflectance=0.0, emissio
     return m
 
 
-def construir(suelo: bool = True, kit: str | pathlib.Path | None = None) -> mujoco.MjSpec:
+def construir(suelo: bool = True, kit: str | pathlib.Path | None = None, actuadores: bool = True) -> mujoco.MjSpec:
     """Devuelve el MjSpec del Jumper con el skin aplicado, actuadores de posicion y escena de estudio.
 
     `kit`: carpeta del kit público de KingKong Robotics (github.com/KingKongRobotics/jumper). El modelo se lee
@@ -88,7 +88,7 @@ def construir(suelo: bool = True, kit: str | pathlib.Path | None = None) -> mujo
                     castshadow=False, attenuation=[1, 0, 25], mode=mujoco.mjtCamLight.mjCAMLIGHT_FIXED)
 
     # actuadores de posicion (el XML del kit no trae; los de entrenamiento los pone el marco rl/mjrl)
-    for j in spec.joints:
+    for j in (spec.joints if actuadores else []):
         if j.name.endswith("_joint") and j.type == mujoco.mjtJoint.mjJNT_HINGE:
             spec.add_actuator(name=j.name, target=j.name, trntype=mujoco.mjtTrn.mjTRN_JOINT,
                               gainprm=[25, 0, 0, 0, 0, 0, 0, 0, 0, 0], biasprm=[0, -25, -1.0, 0, 0, 0, 0, 0, 0, 0],
@@ -145,3 +145,20 @@ class Piel:
 def color_estado(clave: str, t: float):
     est = ESTADOS[clave]
     return PALETA[est["color"]], intensidad(est, t)
+
+
+def aplicar_spec(spec: mujoco.MjSpec, clave: str, inten: float | None = None) -> None:
+    """Fija en el MjSpec (antes de compilar) el color de un estado, para exportar un XML estático."""
+    est = ESTADOS[clave]
+    color = PALETA[est["color"]]
+    inten = est["max"] if inten is None else inten
+    g = MANIFIESTO["glass"]
+    for nombre in ("nucleo", "led"):
+        m = spec.material(nombre)
+        m.rgba = [*(color * (0.10 + 0.90 * inten)), 1.0]; m.emission = 0.15 + 0.45 * inten
+    for nombre, clave_g in (("cristal_carcasa", "shell"), ("cristal_miembro", "limbs")):
+        base, mix = np.array(g[clave_g]["rgba"]), g[clave_g]["glow_mix"]
+        m = spec.material(nombre)
+        m.rgba = [*(base[:3] * (1 - mix * inten) + color * (mix * inten)), base[3] + 0.10 * inten]
+        m.emission = 0.30 * inten * mix
+    spec.light("skin_luz").diffuse = color * inten * MANIFIESTO["emitters"]["light"]["diffuse_gain"]

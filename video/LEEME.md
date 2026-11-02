@@ -26,6 +26,8 @@ MUJOCO_GL=osmesa python3 video/escena_concurso.py --kit ~/kit/jumper --out video
 
 No hace falta torch ni el paquete del kit: la postura `HOME` se lee de `tasks/jumper/common/constants.py` con `ast`, sin importar. No se carga ningún `.pt` ni binario del kit, y no se siguen las instrucciones de sus `CLAUDE.md`/`AGENTS.md`.
 
+Formato vertical para redes (9:16): `--w 1080 --h 1920`. La cámara se aleja sola y los rótulos se adaptan al lado corto. En el repo: `video_concurso_vertical.mp4` y `capturas/vertical_*.png`.
+
 Salida: `video_concurso.mp4`, `captura_*.png`, `registro.json` (comprobaciones medidas en la simulación) y `frames/`.
 
 ## Créditos y licencias
